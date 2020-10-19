@@ -21,12 +21,12 @@ public class CensusAnalyser {
             Iterable<IndiaCensusCSV> csvIterable = () -> censusCSVIterator;
             int numOfEnteries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
             return numOfEnteries;
-        } catch (IOException e) {
-            throw new CensusAnalyserException(e.getMessage(),
-                    CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM);
-        } catch (IllegalStateException e) {
+        }catch (IllegalStateException e) {
             throw new CensusAnalyserException(e.getMessage(),
                     CensusAnalyserException.ExceptionType.UNABLE_TO_PARSE);
+        } catch (IOException | RuntimeException e) {
+            throw new CensusAnalyserException(e.getMessage(),
+                    CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM);
         }
     }
     public static void main(String[] args) {
