@@ -16,4 +16,8 @@ dependencies {
     testImplementation 'org.hamcrest:hamcrest-library:1.3'
     compile 'com.google.code.gson:gson:2.2.+'
     compile "com.opencsv:opencsv:4.0"
+    compile(files("C:\\Users\\DIRECTOR HOME\\IdeaProjects\\CSVBuilderDir.main.jar"))
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-csv
+    compile group: 'org.apache.commons', name: 'commons-csv', version: '1.4'
+
 }
