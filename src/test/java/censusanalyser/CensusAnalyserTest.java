@@ -1,5 +1,6 @@
 package censusanalyser;
 
+import csvbuilder.CSVException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -15,6 +16,16 @@ public class CensusAnalyserTest {
     private static final String WRONG_INDIA_STATE_CSV_FILE_TYPE_PATH = "./src/test/resources/IndiaStateCode.txt";
     private static final String WRONG_INDIA_STATE_CSV_DELIMITER_PATH = "./src/test/resources/IndiaStateCodeWrongDelimiter.csv";
     private static final String WRONG_INDIA_STATE_CSV_HEADER_PATH = "./src/test/resources/IndiaStateCodeWrongHeader.csv";
+
+    @Test
+    public void givenIndianCensusCSVFile_whenCorrectAndUsingCommonsCSV_returnsCorrectRecords() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            int numOfRecords = censusAnalyser.loadIndiaCensusDataCommonsCSV(INDIA_CENSUS_CSV_FILE_PATH);
+            Assert.assertEquals(29, numOfRecords);
+        } catch (CSVException e) {
+        }
+    }
 
     @Test
     public void givenIndianCensusCSVFile_whenCorrect_returnsCorrectRecords() {
