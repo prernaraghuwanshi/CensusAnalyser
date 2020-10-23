@@ -1,5 +1,6 @@
 package censusanalyser;
 
+import com.google.gson.Gson;
 import csvbuilder.CSVException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,13 +18,14 @@ public class CensusAnalyserTest {
     private static final String WRONG_INDIA_STATE_CSV_DELIMITER_PATH = "./src/test/resources/IndiaStateCodeWrongDelimiter.csv";
     private static final String WRONG_INDIA_STATE_CSV_HEADER_PATH = "./src/test/resources/IndiaStateCodeWrongHeader.csv";
 
+
     @Test
     public void givenIndianCensusCSVFile_whenCorrectAndUsingCommonsCSV_returnsCorrectRecords() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             int numOfRecords = censusAnalyser.loadIndiaCensusDataCommonsCSV(INDIA_CENSUS_CSV_FILE_PATH);
             Assert.assertEquals(29, numOfRecords);
-        } catch (CSVException e) {
+        } catch (CensusAnalyserException e) {
         }
     }
 
@@ -33,19 +35,19 @@ public class CensusAnalyserTest {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             int numOfRecords = censusAnalyser.loadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
             Assert.assertEquals(29, numOfRecords);
-        } catch (CSVException e) {
+        } catch (CensusAnalyserException e) {
         }
     }
 
     @Test
-    public void givenIndiaCensusData_withWrongFile_shouldThrowException() {
+    public void givenIndiaCensusData_withWrongFilePath_shouldThrowException() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             ExpectedException exceptionRule = ExpectedException.none();
             exceptionRule.expect(CSVException.class);
             censusAnalyser.loadIndiaCensusData(WRONG_CSV_FILE_PATH);
-        } catch (CSVException e) {
-            Assert.assertEquals(CSVException.ExceptionType.CSV_FILE_PROBLEM, e.type);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
         }
     }
 
@@ -56,8 +58,8 @@ public class CensusAnalyserTest {
             ExpectedException exceptionRule = ExpectedException.none();
             exceptionRule.expect(CSVException.class);
             censusAnalyser.loadIndiaCensusData(WRONG_FILE_TYPE_PATH);
-        } catch (CSVException e) {
-            Assert.assertEquals(CSVException.ExceptionType.CSV_FILE_PROBLEM, e.type);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_TYPE_PROBLEM, e.type);
         }
     }
 
@@ -68,8 +70,8 @@ public class CensusAnalyserTest {
             ExpectedException exceptionRule = ExpectedException.none();
             exceptionRule.expect(CSVException.class);
             censusAnalyser.loadIndiaCensusData(WRONG_DELIMITER_PATH);
-        } catch (CSVException e) {
-            Assert.assertEquals(CSVException.ExceptionType.CSV_FILE_PROBLEM, e.type);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.HEADER_DELIMETER_PROBLEM, e.type);
         }
     }
     @Test
@@ -79,8 +81,8 @@ public class CensusAnalyserTest {
             ExpectedException exceptionRule = ExpectedException.none();
             exceptionRule.expect(CSVException.class);
             censusAnalyser.loadIndiaCensusData(WRONG_HEADER_PATH);
-        } catch (CSVException e) {
-            Assert.assertEquals(CSVException.ExceptionType.CSV_FILE_PROBLEM, e.type);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.HEADER_DELIMETER_PROBLEM, e.type);
         }
     }
 
@@ -90,19 +92,19 @@ public class CensusAnalyserTest {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             int numberOfStateCode = censusAnalyser.loadIndianStateCode(INDIA_STATE_CSV_FILE_PATH);
             Assert.assertEquals(37,numberOfStateCode);
-        } catch (CSVException e) {
+        } catch (CensusAnalyserException e) {
         }
     }
 
     @Test
-    public void givenIndianStateCSV_withWrongFile_shouldThrowException() {
+    public void givenIndianStateCSV_withWrongFilePath_shouldThrowException() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             ExpectedException exceptionRule = ExpectedException.none();
             exceptionRule.expect(CSVException.class);
             censusAnalyser.loadIndianStateCode(WRONG_INDIA_STATE_CSV_FILE_PATH);
-        } catch (CSVException e) {
-            Assert.assertEquals(CSVException.ExceptionType.CSV_FILE_PROBLEM, e.type);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
         }
     }
 
@@ -113,8 +115,8 @@ public class CensusAnalyserTest {
             ExpectedException exceptionRule = ExpectedException.none();
             exceptionRule.expect(CSVException.class);
             censusAnalyser.loadIndianStateCode(WRONG_INDIA_STATE_CSV_FILE_TYPE_PATH);
-        } catch (CSVException e) {
-            Assert.assertEquals(CSVException.ExceptionType.CSV_FILE_PROBLEM, e.type);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_TYPE_PROBLEM, e.type);
         }
     }
 
@@ -125,8 +127,8 @@ public class CensusAnalyserTest {
             ExpectedException exceptionRule = ExpectedException.none();
             exceptionRule.expect(CSVException.class);
             censusAnalyser.loadIndianStateCode(WRONG_INDIA_STATE_CSV_DELIMITER_PATH);
-        } catch (CSVException e) {
-            Assert.assertEquals(CSVException.ExceptionType.CSV_FILE_PROBLEM, e.type);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.HEADER_DELIMETER_PROBLEM, e.type);
         }
     }
 
@@ -137,8 +139,8 @@ public class CensusAnalyserTest {
             ExpectedException exceptionRule = ExpectedException.none();
             exceptionRule.expect(CSVException.class);
             censusAnalyser.loadIndianStateCode(WRONG_INDIA_STATE_CSV_HEADER_PATH);
-        } catch (CSVException e) {
-            Assert.assertEquals(CSVException.ExceptionType.CSV_FILE_PROBLEM, e.type);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.HEADER_DELIMETER_PROBLEM, e.type);
         }
     }
 }
