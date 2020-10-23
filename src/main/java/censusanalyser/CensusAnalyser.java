@@ -8,7 +8,9 @@ import csvbuilder.ICSVBuilder;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -97,7 +99,7 @@ public class CensusAnalyser {
         if (censusCSVList == null || censusCSVList.size() == 0)
             throw new CensusAnalyserException("No census data", CensusAnalyserException.ExceptionType.NO_DATA);
         Comparator<IndiaCensusCSV> censusComparator = Comparator.comparing(census -> census.state);
-        this.sort(censusComparator, censusCSVList);
+        this.sortAscending(censusComparator, censusCSVList);
         String sortedStateCensusJson = new Gson().toJson(censusCSVList);
         return sortedStateCensusJson;
     }
@@ -107,13 +109,29 @@ public class CensusAnalyser {
         if (stateCSVList == null || stateCSVList.size() == 0)
             throw new CensusAnalyserException("No census data", CensusAnalyserException.ExceptionType.NO_DATA);
         Comparator<IndiaStateCodeCSV> stateComparator = Comparator.comparing(stateCensus -> stateCensus.stateCode);
-        this.sort(stateComparator, stateCSVList);
+        this.sortAscending(stateComparator, stateCSVList);
         String sortedStateCensusJson = new Gson().toJson(stateCSVList);
         return sortedStateCensusJson;
     }
 
-    // Generic Sorting function
-    private <E> void sort(Comparator<E> anyComparator, List<E> csvList) {
+    // Sort IndiaCensusCSV population wise(descending) and return output in JSON file
+    public String getPopulationWiseSortedCensusData() throws CensusAnalyserException {
+        Path pathForResources = createDirectory();
+        try (Writer writer = Files.newBufferedWriter(Paths.get(pathForResources + "/IndiaStateCensusSortedByPopulation.json"));) {
+            if (censusCSVList == null || censusCSVList.size() == 0)
+                throw new CensusAnalyserException("No census data", CensusAnalyserException.ExceptionType.NO_DATA);
+            Comparator<IndiaCensusCSV> censusComparator = Comparator.comparing(census -> census.population);
+            this.sortDescending(censusComparator, censusCSVList);
+            String sortedStateCensusJson = new Gson().toJson(censusCSVList);
+            writer.write(sortedStateCensusJson);
+            return sortedStateCensusJson;
+        } catch (IOException e) {
+            throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.JSON_FILE_PROBLEM);
+        }
+    }
+
+    // Generic Sorting function in ascending order
+    private <E> void sortAscending(Comparator<E> anyComparator, List<E> csvList) {
         int listSize = csvList.size();
         IntStream.range(0, listSize - 1).flatMap(i -> IntStream.range(1, listSize - i)).forEach(j -> {
             E census1 = csvList.get(j - 1);
@@ -123,5 +141,30 @@ public class CensusAnalyser {
                 csvList.set(j, census1);
             }
         });
+    }
+
+    // Generic Sorting function in descending order
+    private <E> void sortDescending(Comparator<E> anyComparator, List<E> csvList) {
+        int listSize = csvList.size();
+        IntStream.range(0, listSize - 1).flatMap(i -> IntStream.range(1, listSize - i)).forEach(j -> {
+            E census1 = csvList.get(j - 1);
+            E census2 = csvList.get(j);
+            if (anyComparator.compare(census1, census2) < 0) {
+                csvList.set(j - 1, census2);
+                csvList.set(j, census1);
+            }
+        });
+    }
+
+    // Create directory to store all resources
+    private Path createDirectory() {
+        Path pathForResources = Paths.get("C:\\Users\\DIRECTOR HOME\\eclipseworkspace\\CensusAnalyser\\OutputFiles");
+        if (Files.notExists(pathForResources)) {
+            try {
+                Files.createDirectory(pathForResources);
+            } catch (IOException e) {
+            }
+        }
+        return pathForResources;
     }
 }
