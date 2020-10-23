@@ -97,20 +97,30 @@ public class CensusAnalyser {
         if (censusCSVList == null || censusCSVList.size() == 0)
             throw new CensusAnalyserException("No census data", CensusAnalyserException.ExceptionType.NO_DATA);
         Comparator<IndiaCensusCSV> censusComparator = Comparator.comparing(census -> census.state);
-        this.sort(censusComparator);
+        this.sort(censusComparator, censusCSVList);
         String sortedStateCensusJson = new Gson().toJson(censusCSVList);
         return sortedStateCensusJson;
     }
 
-    // Sorting function
-    private void sort(Comparator<IndiaCensusCSV> censusComparator) {
-        int listSize = censusCSVList.size();
+    // Sort IndiaStateCodeCSV state-code wise and return output in JSON format
+    public String getStateCodeWiseSortedStateData() throws CensusAnalyserException {
+        if (stateCSVList == null || stateCSVList.size() == 0)
+            throw new CensusAnalyserException("No census data", CensusAnalyserException.ExceptionType.NO_DATA);
+        Comparator<IndiaStateCodeCSV> stateComparator = Comparator.comparing(stateCensus -> stateCensus.stateCode);
+        this.sort(stateComparator, stateCSVList);
+        String sortedStateCensusJson = new Gson().toJson(stateCSVList);
+        return sortedStateCensusJson;
+    }
+
+    // Generic Sorting function
+    private <E> void sort(Comparator<E> anyComparator, List<E> csvList) {
+        int listSize = csvList.size();
         IntStream.range(0, listSize - 1).flatMap(i -> IntStream.range(1, listSize - i)).forEach(j -> {
-            IndiaCensusCSV census1 = censusCSVList.get(j - 1);
-            IndiaCensusCSV census2 = censusCSVList.get(j);
-            if (censusComparator.compare(census1, census2) > 0) {
-                censusCSVList.set(j - 1, census2);
-                censusCSVList.set(j, census1);
+            E census1 = csvList.get(j - 1);
+            E census2 = csvList.get(j);
+            if (anyComparator.compare(census1, census2) > 0) {
+                csvList.set(j - 1, census2);
+                csvList.set(j, census1);
             }
         });
     }
