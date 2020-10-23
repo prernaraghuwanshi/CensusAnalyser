@@ -5,7 +5,7 @@ import csvbuilder.CSVException;
 public class CensusAnalyserException extends Exception {
 
     enum ExceptionType {
-        CENSUS_FILE_PROBLEM, UNABLE_TO_PARSE, HEADER_DELIMETER_PROBLEM, FILE_TYPE_PROBLEM;
+        CENSUS_FILE_PROBLEM, UNABLE_TO_PARSE, HEADER_DELIMETER_PROBLEM, FILE_TYPE_PROBLEM, NO_DATA;
     }
 
     ExceptionType type;
