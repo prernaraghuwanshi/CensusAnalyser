@@ -130,6 +130,21 @@ public class CensusAnalyser {
         }
     }
 
+    public String getPopulationDensityWiseSortedCensusData() throws CensusAnalyserException {
+        Path pathForResources = createDirectory();
+        try (Writer writer = Files.newBufferedWriter(Paths.get(pathForResources + "/IndiaStateCensusSortedByPopulationDensity.json"));) {
+            if (censusCSVList == null || censusCSVList.size() == 0)
+                throw new CensusAnalyserException("No census data", CensusAnalyserException.ExceptionType.NO_DATA);
+            Comparator<IndiaCensusCSV> censusComparator = Comparator.comparing(census -> census.densityPerSqKm);
+            this.sortDescending(censusComparator, censusCSVList);
+            String sortedStateCensusJson = new Gson().toJson(censusCSVList);
+            writer.write(sortedStateCensusJson);
+            return sortedStateCensusJson;
+        } catch (IOException e) {
+            throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.JSON_FILE_PROBLEM);
+        }
+    }
+
     // Generic Sorting function in ascending order
     private <E> void sortAscending(Comparator<E> anyComparator, List<E> csvList) {
         int listSize = csvList.size();
@@ -167,4 +182,6 @@ public class CensusAnalyser {
         }
         return pathForResources;
     }
+
+
 }
