@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="censusanalyser.CensusAnalyserTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2020-10-23T06:38:11" hostname="DESKTOP-QTP5K3U" time="0.181">
+<testsuite name="censusanalyser.CensusAnalyserTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-10-24T06:02:40" hostname="DESKTOP-QTP5K3U" time="0.155">
   <properties/>
-  <testcase name="givenIndiaCensusData_withWrongHeader_shouldThrowException" classname="censusanalyser.CensusAnalyserTest" time="0.052"/>
-  <testcase name="givenIndiaCensusData_withWrongDelimiter_shouldThrowException" classname="censusanalyser.CensusAnalyserTest" time="0.001"/>
-  <testcase name="givenIndianCensusCSVFile_whenCorrect_returnsCorrectRecords" classname="censusanalyser.CensusAnalyserTest" time="0.092"/>
-  <testcase name="givenIndianStateCSV_withWrongHeader_shouldThrowException" classname="censusanalyser.CensusAnalyserTest" time="0.005"/>
-  <testcase name="givenIndiaCensusData_withWrongFileType_shouldThrowException" classname="censusanalyser.CensusAnalyserTest" time="0.0"/>
-  <testcase name="givenIndiaCensusData_withWrongFilePath_shouldThrowException" classname="censusanalyser.CensusAnalyserTest" time="0.001"/>
-  <testcase name="givenIndianCensusCSVFile_whenCorrectAndUsingCommonsCSV_returnsCorrectRecords" classname="censusanalyser.CensusAnalyserTest" time="0.013"/>
-  <testcase name="givenIndianStateCSV_withWrongFileType_shouldThrowException" classname="censusanalyser.CensusAnalyserTest" time="0.0"/>
-  <testcase name="givenIndianStateCSV_withWrongFilePath_shouldThrowException" classname="censusanalyser.CensusAnalyserTest" time="0.001"/>
-  <testcase name="givenIndianStateCSV_whenCorrect_shouldReturnExactCount" classname="censusanalyser.CensusAnalyserTest" time="0.011"/>
-  <testcase name="givenIndianStateCSV_withWrongDelimiter_shouldThrowException" classname="censusanalyser.CensusAnalyserTest" time="0.004"/>
+  <testcase name="givenIndianCensusData_whenSortedOnArea_shouldReturnSortedResultInDescendingOrder" classname="censusanalyser.CensusAnalyserTest" time="0.155"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
